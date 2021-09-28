@@ -71,6 +71,7 @@ public final class Main {
         try {
           input = input.trim();
           String[] arguments = input.split(" ");
+          //Andrew: Maybe try using a switch statement instead?
           if (arguments[0].equals("add")) {
             double sum = Double.parseDouble(arguments[1]) + Double.parseDouble(arguments[2]);
             System.out.println(sum);
@@ -83,9 +84,11 @@ public final class Main {
             br2.readLine();
             String line;
             while ((line = br2.readLine()) != null) {
+              //Andrew: This could also be accomplished using one original call of split rather than 2
               starData.add(line.split(","));
             }
             System.out.println("Read " + starData.size() + " stars from " + arguments[1]);
+            //Andrew: bug- nothing stops the user from running naive_neighbors without data loaded
           } else if (arguments[0].equals("naive_neighbors")) {
             double x, y, z;
             int k = Integer.parseInt(arguments[1]);
@@ -94,6 +97,7 @@ public final class Main {
               while (!("\"" + starData.get(index)[1] + "\"").equals(arguments[2])) {
                 index++;
               }
+              //Andrew: Parsing the data just as arguments would make this more clear and efficient.
               x = Double.parseDouble(starData.get(index)[2]);
               y = Double.parseDouble(starData.get(index)[3]);
               z = Double.parseDouble(starData.get(index)[4]);
@@ -119,7 +123,8 @@ public final class Main {
     }
 
   }
-
+  //Andrew: All of your new code is written here in main. Putting it in a separate class would allow for more
+  //delegation and less confusion and clutter.
   private void findNeighbors(int k, double x, double y, double z, ArrayList<String[]> allData) {
     Hashtable<Double, Integer> stars = new Hashtable<>();
     for (int i = 0; i < k; i++) {
@@ -132,6 +137,8 @@ public final class Main {
         // get put into the Hashtable
       }
     }
+    //Andrew: this part seems to be a bit redundant. I think this logic could be incorporated into 
+    //the previous loop for greater efficiency.
     for (int i = k; i < allData.size(); i++) {
       if (!sameStar(x, y, z, allData.get(i))) {
         double currDistance = distanceTo(x, y, z, allData.get(i));
@@ -149,6 +156,7 @@ public final class Main {
         }
       }
     }
+    //Andrew: If you're using an arraylist here, maybe just use that as the primary data structure for this method.
     ArrayList<Integer> sortedStars = new ArrayList<>();
     for (Integer id : stars.values()) {
       sortedStars.add(id);
@@ -164,7 +172,7 @@ public final class Main {
         + Math.pow(Double.parseDouble(star2[3]) - y, 2)
         + Math.pow(Double.parseDouble(star2[4]) - z, 2));
   }
-
+  //Andrew: this works, but the same could be accomplished by checking the name of the input star
   private boolean sameStar(double x, double y, double z, String[] star2) {
     return (x == Double.parseDouble(star2[2]) && y == Double.parseDouble(star2[3])
         && z == Double.parseDouble(star2[4]));
