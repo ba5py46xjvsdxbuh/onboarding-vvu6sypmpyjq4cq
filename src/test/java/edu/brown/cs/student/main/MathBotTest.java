@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class MathBotTest {
+  
+  //Andrew: Good test cases provided here. Notably however, there is no coverage of your stars methods.
 
   @Test
   public void testAddition() {
